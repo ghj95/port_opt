@@ -6,3 +6,4 @@ matplotlib
 scipy
 cvxpy
 plotly
+seaborn
