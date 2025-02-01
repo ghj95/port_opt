@@ -1,4 +1,5 @@
 streamlit
+streamlit_shadcn_ui
 yfinance
 pandas
 numpy
