@@ -21,7 +21,7 @@ from interpretations import appinfo
 
 st.set_page_config(page_title="Portfolio Optimizer")
 
-st.markdown("## Portfolio Optimizer")
+st.markdown("## Portfolio Optimizer App")
 col1, col2 = st.columns([0.14, 0.86], gap="small")
 col1.write("`Created by:`")
 linkedin_url = "https://www.linkedin.com/in/gabriel-hardy-joseph/"
@@ -32,7 +32,7 @@ col2.markdown(
 
 appinfo()
 
-with st.expander("View Optimization Strategies"):
+with st.expander("View Optimization Methodology"):
        optimization_strategies_info()
 
 st.sidebar.header("Select assets and parameters")
@@ -90,28 +90,28 @@ if st.sidebar.button("Fetch data"):
         fig1 = px.pie(clean_weights, names="Asset", values="Weight (%)", hole=0.3, color_discrete_sequence=px.colors.sequential.Greens)
         fig1.update_layout(width=200, height=200, showlegend=True, margin=dict(t=0, b=40, l=0, r=0))
         st.plotly_chart(fig1, use_container_width=True)
-    '''
-    # performance metrics
-    portfolio_mean = round(((portfolio_performance.iloc[0] / portfolio_performance.iloc[-1]) ** (1 / (portfolio_performance.index[-1] - portfolio_performance.index[0]).days / 365) - 1) * 100)
-    portfolio_std = np.sqrt(optimal_weights.T @ cov_matrix @ optimal_weights) * np.sqrt(252)
-    portfolio_sharpe = portfolio_mean / portfolio_risk
     
-    index_returns = sp500.pct_change().dropna()
-    index_mean = index_returns.mean() * 252
-    index_std = index_returns.std() * np.sqrt(252)
-    index_sharpe = index_mean / index_std
+    # # performance metrics
+    # portfolio_mean = round(((portfolio_performance.iloc[0] / portfolio_performance.iloc[-1]) ** (1 / (portfolio_performance.index[-1] - portfolio_performance.index[0]).days / 365) - 1) * 100)
+    # portfolio_std = np.sqrt(optimal_weights.T @ cov_matrix @ optimal_weights) * np.sqrt(252)
+    # portfolio_sharpe = portfolio_mean / portfolio_risk
+    
+    # index_returns = sp500.pct_change().dropna()
+    # index_mean = index_returns.mean() * 252
+    # index_std = index_returns.std() * np.sqrt(252)
+    # index_sharpe = index_mean / index_std
 
-    st.write("#### Optimal Portfolio Performance")
-    left_col, right_col = st.columns(2)
-    left_col.markdown(f"Portfolio Annualized Returns : {portfolio_mean}%")
-    left_col.markdown(f"Portfolio Volatility : {portfolio_std}%")
-    left_col.markdown(f"Portfolio Sharpe Ratio : {portfolio_sharpe}")
+    # st.write("#### Optimal Portfolio Performance")
+    # left_col, right_col = st.columns(2)
+    # left_col.markdown(f"Portfolio Annualized Returns : {portfolio_mean}%")
+    # left_col.markdown(f"Portfolio Volatility : {portfolio_std}%")
+    # left_col.markdown(f"Portfolio Sharpe Ratio : {portfolio_sharpe}")
 
-    right_col, right_col = st.columns(2)
-    right_col.markdown(f"Index Returns : {index_mean}%")
-    right_col.markdown(f"Index Volatility : {index_std}%")
-    right_col.markdown(f"Index Sharpe Ratio : {index_sharpe}")
-    '''
+    # right_col, right_col = st.columns(2)
+    # right_col.markdown(f"Index Returns : {index_mean}%")
+    # right_col.markdown(f"Index Volatility : {index_std}%")
+    # right_col.markdown(f"Index Sharpe Ratio : {index_sharpe}")
+    
     st.divider()
     st.write("### Portfolio Returns")
     fig2 = px.line(normalized_index, x=normalized_index.index, y=normalized_index.columns, color_discrete_sequence=px.colors.sequential.Greys)

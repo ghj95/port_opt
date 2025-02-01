@@ -5,11 +5,105 @@ def appinfo():
     st.write("⬅️ Try it out !")
 
 def optimization_strategies_info():
-    st.write("")
-    st.markdown("**Sharpe Ratio**: Measures the return per unit of total risk taken. This metric is ideal for investors seeking to maximize returns relative to risk. A higher Sharpe Ratio indicates more effective risk management alongside return generation.")
-    st.markdown( "**Volatility**: Represented by the standard deviation of portfolio returns, this metric is crucial for investors focused on reducing fluctuations in their portfolio's value. Lower volatility signifies a more stable investment, aligning with conservative investment strategies.")
-    st.markdown("**Sortino Ratio**: This ratio emphasizes downside risk by measuring returns per unit of negative volatility. It’s beneficial for investors who prioritize capital preservation and want to avoid significant losses. A higher Sortino Ratio indicates better performance in adverse market conditions.")
-    st.markdown("**Tracking Error**: This metric measures how closely a portfolio's returns follow its benchmark. It’s suitable for investors who want to ensure their portfolio closely aligns with a benchmark index. A lower Tracking Error indicates consistency with benchmark performance.")
-    st.markdown("**Information Ratio**: This ratio evaluates returns above a benchmark relative to the active risk taken. It’s ideal for active investors who seek to outperform a benchmark while managing risk. A higher Information Ratio indicates successful active management.")
-    st.markdown("**Conditional Value-at-Risk (CVaR)**: This metric estimates potential losses in extreme market conditions, focusing on worst-case scenarios. It's essential for risk-averse investors looking to safeguard their capital against severe downturns. Lower CVaR values indicate better risk protection.")
-    st.markdown("*Benchmark: NIFTY50*")
+    # --- Introduction ---
+    st.write(
+        "This application uses **Mean-Variance Optimization (MVO)**, "
+        "based on **Modern Portfolio Theory (MPT)**, to construct an optimal portfolio "
+        "by balancing expected return and risk."
+    )
+
+    # --- Mean-Variance Optimization ---
+    st.markdown("#### Mean-Variance Optimization")
+
+    st.write("The objective of portfolio optimization is to maximize the risk-adjusted return:")
+    st.latex(r"\max_{w} \left( E(R_p) - \lambda \cdot \sigma_p^2 \right)")
+
+    st.write("where:")
+    st.markdown(
+        r"""
+        - $E(R_p)$ is the **expected portfolio return**.
+        - $\sigma_p^2$ is the **portfolio variance (risk)**.
+        - $\lambda$ is the **risk-aversion parameter**.
+        - $w$ represents the **portfolio weights**.
+        """
+    )
+
+    # --- Portfolio Expected Return ---
+    st.markdown("#### Portfolio Expected Return")
+
+    st.write("The portfolio's expected return is computed as:")
+    st.latex(r"E(R_p) = w^T \cdot E(R)")
+
+    st.write("where:")
+    st.markdown(
+        r"""
+        - $w$ is the **vector of portfolio weights**.
+        - $E(R)$ is the **vector of expected asset returns**.
+        """
+    )
+
+    # --- Portfolio Risk (Variance) ---
+    st.markdown("#### Portfolio Risk (Variance)")
+
+    st.write("Portfolio risk is determined using the covariance matrix:")
+    st.latex(r"\sigma_p^2 = w^T \Sigma w")
+
+    st.write("where:")
+    st.markdown(
+        r"""
+        - $\Sigma$ is the **covariance matrix of asset returns**.
+        - $w$ is the **vector of portfolio weights**.
+        """
+    )
+
+    # --- Constraints ---
+    st.markdown("#### Optimization Constraints")
+
+    st.write("The portfolio optimization problem is subject to the following constraints:")
+    st.latex(r"\sum w_i = 1, \quad w_i \geq 0 \quad \forall i")
+
+    st.write("where:")
+    st.markdown(
+        r"""
+        - The first constraint ensures the portfolio is **fully invested**: $\sum w_i = 1$.
+        - The second constraint prevents **short selling**: $w_i \geq 0$.
+        """
+    )
+
+    # --- Portfolio Standard Deviation ---
+    st.markdown("#### Portfolio Standard Deviation")
+
+    st.write("The standard deviation (volatility) of the portfolio is given by:")
+    st.latex(r"\sigma_p = \sqrt{ w^T \Sigma w }")
+
+    st.write("where:")
+    st.markdown(
+        r"""
+        - $\sigma_p$ represents **portfolio volatility**.
+        - $w$ is the **vector of asset weights**.
+        - $\Sigma$ is the **covariance matrix of asset returns**.
+        """
+    )
+
+    # --- Sharpe Ratio ---
+    st.markdown("#### Sharpe Ratio")
+
+    st.write("The **Sharpe Ratio** evaluates the risk-adjusted return of the portfolio:")
+    st.latex(r"\text{Sharpe Ratio} = \frac{E(R_p) - R_f}{\sigma_p}")
+
+    st.write("where:")
+    st.markdown(
+        r"""
+        - $R_f$ is the **risk-free rate**.
+        - Higher values indicate **better risk-adjusted performance**.
+        """
+    )
+
+    # --- Conclusion ---
+    st.write(
+        "By solving this **convex optimization problem**, the optimal portfolio allocation is determined, "
+        "allowing for an optimal balance between return and risk."
+    )
+
+    st.markdown("**Benchmark**: S&P 500 (NYSE : ^GSPC)")
+    st.markdown("**Risk free rate**: 10Y US Treasury Bond Yields (NYSE : ^TNX)")
