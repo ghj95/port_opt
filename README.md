@@ -20,4 +20,4 @@ This project is a Streamlit-based web application that performs portfolio optimi
 * Compare the portfolio against the S&P 500 through visualizations.
 
 ### How It Works
-Access app : [Portfolio Optimizer App]([url](https://port-opt.streamlit.app))
+Access app : [Portfolio Optimizer App](https://port-opt.streamlit.app)
