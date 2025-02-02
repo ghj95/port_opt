@@ -36,7 +36,7 @@ with st.expander("View Optimization Methodology"):
        optimization_strategies_info()
 
 st.sidebar.header("Select assets and parameters")
-assets = st.sidebar.multiselect("Select stocks:", ["XOM", "PG", "JNJ", "V", "ABBV"], ["XOM", "PG", "JNJ"])
+assets = st.sidebar.multiselect("Select stocks:", ["V", "MSFT", "GOOGL", "AMZN", "AVGO"], ["V", "MSFT", "GOOGL"])
 start_date = st.sidebar.date_input("Start date", "2019-01-01")
 end_date = st.sidebar.date_input("End date", date.today())
 
@@ -49,8 +49,9 @@ if st.sidebar.button("Fetch data"):
     sp500 = yf.download("^GSPC", start=start_date, end=end_date)["Close"]           #index
     sp500.rename(columns={"^GSPC": "S&P 500"}, inplace=True)
 
-    risk_free_rate = yf.download("^TNX")["Close"]          #10y US Treasury bonds
-    
+    risk_free_rate = yf.download("^TNX", period="1d")["Close"].iloc[-1]          #10y US Treasury bonds
+    risk_free_rate = risk_free_rate["^TNX"]
+
     # compute returns
     returns = data.pct_change().dropna()
     mean_returns = returns.mean()
@@ -87,30 +88,44 @@ if st.sidebar.button("Fetch data"):
         ui.table(optimal_weights_df)
     with right_pie:
         clean_weights = optimal_weights_df[optimal_weights_df["Weight (%)"] != 0]
-        fig1 = px.pie(clean_weights, names="Asset", values="Weight (%)", hole=0.3, color_discrete_sequence=px.colors.sequential.Greens)
+        fig1 = px.pie(clean_weights, names="Asset", values="Weight (%)", hole=0.3, color_discrete_sequence=px.colors.sequential.GnBu)
         fig1.update_layout(width=200, height=200, showlegend=True, margin=dict(t=0, b=40, l=0, r=0))
         st.plotly_chart(fig1, use_container_width=True)
     
-    # # performance metrics
-    # portfolio_mean = round(((portfolio_performance.iloc[0] / portfolio_performance.iloc[-1]) ** (1 / (portfolio_performance.index[-1] - portfolio_performance.index[0]).days / 365) - 1) * 100)
-    # portfolio_std = np.sqrt(optimal_weights.T @ cov_matrix @ optimal_weights) * np.sqrt(252)
-    # portfolio_sharpe = portfolio_mean / portfolio_risk
+    # performance metrics
     
-    # index_returns = sp500.pct_change().dropna()
-    # index_mean = index_returns.mean() * 252
-    # index_std = index_returns.std() * np.sqrt(252)
-    # index_sharpe = index_mean / index_std
+    # portoflio performance
+    V_i = portfolio_performance.iloc[0]         # intiail value
+    V_f = portfolio_performance.iloc[-1]            # final value
+    T = (portfolio_performance.index[-1] - portfolio_performance.index[0]).days / 365           
 
-    # st.write("#### Optimal Portfolio Performance")
-    # left_col, right_col = st.columns(2)
-    # left_col.markdown(f"Portfolio Annualized Returns : {portfolio_mean}%")
-    # left_col.markdown(f"Portfolio Volatility : {portfolio_std}%")
-    # left_col.markdown(f"Portfolio Sharpe Ratio : {portfolio_sharpe}")
+    # annualized return
+    portfolio_mean = ((V_f / V_i) ** (1 / T) - 1) * 100  
 
-    # right_col, right_col = st.columns(2)
-    # right_col.markdown(f"Index Returns : {index_mean}%")
-    # right_col.markdown(f"Index Volatility : {index_std}%")
-    # right_col.markdown(f"Index Sharpe Ratio : {index_sharpe}")
+    # portfolio std
+    portfolio_std = np.sqrt(optimal_weights.T @ cov_matrix @ optimal_weights) * np.sqrt(252) * 100
+
+    # portfolio sharpe
+    portfolio_sharpe = (portfolio_mean - risk_free_rate) / portfolio_std
+
+    # index perfofmance
+    index_returns = sp500.pct_change().dropna()
+    index_mean = index_returns.mean() * 252 * 100  # Convert to percentage
+    index_std = index_returns.std() * np.sqrt(252) * 100
+    index_sharpe = (index_mean - risk_free_rate) / index_std
+
+    # display
+    st.write("#### Optimal Portfolio Performance")
+    left_col, right_col = st.columns(2)
+    with left_col:
+        st.markdown(f"**Portfolio Annualized Return:** {portfolio_mean:.2f}%")
+        st.markdown(f"**Portfolio Volatility:** {portfolio_std:.2f}%")
+        st.markdown(f"**Portfolio Sharpe Ratio:** {portfolio_sharpe:.2f}")
+
+    with right_col:
+        st.markdown(f"**S&P 500 Annualized Return:** {index_mean.iloc[0]:.2f}%")
+        st.markdown(f"**S&P 500 Volatility:** {index_std.iloc[0]:.2f}%")
+        st.markdown(f"**S&P 500 Sharpe Ratio:** {index_sharpe.iloc[0]:.2f}")
     
     st.divider()
     st.write("### Portfolio Returns")
@@ -137,9 +152,6 @@ if st.sidebar.button("Fetch data"):
     # compute mc var and cvar
     VaR_95_mc = np.percentile(port_sim_returns, 5)
     CVaR_95_mc = port_sim_returns[port_sim_returns <= VaR_95_mc].mean()
-
-    print(f"Monte Carlo VaR 95%: {VaR_95_mc:.4f}")
-    print(f"Monte Carlo VaR 95%: {CVaR_95_mc:.4f}")
 
     # create histogram
     fig3 = go.Figure()
