@@ -18,3 +18,6 @@ This project is a Streamlit-based web application that performs portfolio optimi
 * Compute optimal portfolio allocation using convex optimization.
 * Display portfolio performance metrics such as expected return, risk, and Sharpe ratio.
 * Compare the portfolio against the S&P 500 through visualizations.
+
+### How It Works
+Access app : [Portfolio Optimizer App]([url](https://port-opt.streamlit.app))
