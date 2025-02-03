@@ -19,9 +19,9 @@ from interpretations import appinfo
 
 # designing menus for user input
 
-st.set_page_config(page_title="Portfolio Optimizer", page_icon="📊", layout="wide", initial_sidebar_state="expanded")
+st.set_page_config(page_title="Stock Portfolio Optimizer", page_icon="📊", layout="wide", initial_sidebar_state="expanded")
 
-st.markdown("## 📊 Portfolio Optimizer App")
+st.markdown("## 📊 Stock Portfolio Optimizer App")
 linkedin_url = "https://www.linkedin.com/in/gabriel-hardy-joseph/"
 st.markdown(
     f'<a href="{linkedin_url}" target="_blank" style="text-decoration: none; color: inherit;">`Created by : Gabriel Hardy-Joseph`</a>',
