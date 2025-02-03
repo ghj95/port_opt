@@ -1,8 +1,8 @@
 import streamlit as st
 
 def appinfo():
-    st.markdown("This interactive app construct an optimal portfolio by applying Modern Portfolio Theory (MPT). It fetches real-time financial data, computes expected returns, and optimizes asset allocation to maximize returns while minimizing risk. It also evaluates portfolio risk by calculating Value at Risk (VaR) and Conditional Value at Risk (CVaR).")
-    st.write("⬅️ Try it out !")
+    with st.container(border=True):
+        st.write("This interactive app construct an optimal portfolio by applying Modern Portfolio Theory (MPT). It fetches real-time financial data, computes expected returns, and optimizes asset allocation to maximize returns while minimizing risk. It also evaluates portfolio risk by calculating Value at Risk (VaR) and Conditional Value at Risk (CVaR).")
 
 def optimization_strategies_info():
     # --- Introduction ---
@@ -105,5 +105,5 @@ def optimization_strategies_info():
         "allowing for an optimal balance between return and risk."
     )
 
-    st.markdown("**Benchmark**: S&P 500 (NYSE : ^GSPC)")
+    st.markdown("**Benchmark**: TSX 60 (TSX : TX60.TS)")
     st.markdown("**Risk free rate**: 10Y US Treasury Bond Yields (NYSE : ^TNX)")

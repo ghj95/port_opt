@@ -1,6 +1,6 @@
 # import relevant libraries
 
-from datetime import date
+from datetime import date, timedelta
 import yfinance as yf
 import streamlit as st
 import streamlit_shadcn_ui as ui
@@ -19,14 +19,12 @@ from interpretations import appinfo
 
 # designing menus for user input
 
-st.set_page_config(page_title="Portfolio Optimizer")
+st.set_page_config(page_title="Portfolio Optimizer", page_icon="📊", layout="wide", initial_sidebar_state="expanded")
 
-st.markdown("## Portfolio Optimizer App")
-col1, col2 = st.columns([0.14, 0.86], gap="small")
-col1.write("`Created by:`")
+st.markdown("## 📊 Portfolio Optimizer App")
 linkedin_url = "https://www.linkedin.com/in/gabriel-hardy-joseph/"
-col2.markdown(
-    f'<a href="{linkedin_url}" target="_blank" style="text-decoration: none; color: inherit;"><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="15" height="15" style="vertical-align: middle; margin-right: 10px;">`Gabriel Hardy-Joseph`</a>',
+st.markdown(
+    f'<a href="{linkedin_url}" target="_blank" style="text-decoration: none; color: inherit;">`Created by : Gabriel Hardy-Joseph`</a>',
     unsafe_allow_html=True,
 )
 
@@ -36,12 +34,11 @@ with st.expander("View Optimization Methodology"):
        optimization_strategies_info()
 
 st.sidebar.header("Select assets and parameters")
-assets = st.sidebar.multiselect("Select stocks:", ["V", "MSFT", "GOOGL", "AMZN", "AVGO"], ["V", "MSFT", "GOOGL"])
-start_date = st.sidebar.date_input("Start date", "2019-01-01")
+assets = st.sidebar.multiselect("Select stocks:", ["AAPL", "MSFT", "AMZN", "GOOG"], ["MSFT", "AMZN", "GOOG"])
+start_date = st.sidebar.date_input("Start date", date.today() - timedelta(days=365))
 end_date = st.sidebar.date_input("End date", date.today())
 
 if st.sidebar.button("Fetch data"):
-    st.sidebar.success("Data uploaded")
 
     # fetch stock data
     data = yf.download(assets, start=start_date, end=end_date)["Close"]             #stocks
@@ -80,7 +77,7 @@ if st.sidebar.button("Fetch data"):
     portfolio_performance = (normalized_prices * optimal_weights).sum(axis=1)
     
     # index performance
-    normalized_index = sp500 / sp500.iloc[0]["S&P 500"] * 100          # normalize to start at 100
+    normalized_index = sp500 / sp500.iloc[0] * 100          # normalize to start at 100
     normalized_index["Portfolio"] = portfolio_performance.reindex(normalized_index.index, method="ffill")
 
     left_table, right_pie = st.columns(2)
