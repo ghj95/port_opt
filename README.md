@@ -1,3 +1,5 @@
+# Stock Portfolio Optimizer App
+
 ### Overview
 This project is a Streamlit-based web application that performs portfolio optimization and risk analysis using Mean-Variance Optimization (MVO). It allows users to select assets, fetch financial data, compute optimal portfolio weights, and compare the performance of their portfolio against a benchmark index, such as the S&P 500.
 
@@ -19,5 +21,5 @@ This project is a Streamlit-based web application that performs portfolio optimi
 * Display portfolio performance metrics such as expected return, risk, and Sharpe ratio.
 * Compare the portfolio against the S&P 500 through visualizations.
 
-### How It Works
-Access app : [Portfolio Optimizer App](https://port-opt.streamlit.app)
+### Access the app
+[Portfolio Optimizer App](https://port-opt.streamlit.app)
