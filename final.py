@@ -34,7 +34,7 @@ with st.expander("View Optimization Methodology"):
        optimization_strategies_info()
 
 st.sidebar.header("Select assets and parameters")
-assets = st.sidebar.multiselect("Select stocks:", ["AAPL", "MSFT", "AMZN", "GOOG"], ["MSFT", "AMZN", "GOOG"])
+assets = st.sidebar.multiselect("Select stocks:", ["AMZN", "GOOG", "MSFT", "AAPL"], ["AMZN", "GOOG", "MSFT"])
 start_date = st.sidebar.date_input("Start date", date.today() - timedelta(days=365))
 end_date = st.sidebar.date_input("End date", date.today())
 
